@@ -42,6 +42,12 @@ describe Oystercard do
     expect(oystercard.state).to eq false
   end
 
+  it "Needs minimum £1 to travel" do
+    oystercard = Oystercard.new(0.5, false)
+    expect{oystercard.tapin}.to raise_error "Can't travel - need £1"
+
+  end
+
 
 
 end
