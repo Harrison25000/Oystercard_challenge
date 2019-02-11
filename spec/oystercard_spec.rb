@@ -7,4 +7,9 @@ describe Oystercard do
 
   end
 
+  it "Adds money to balance" do
+    oystercard = Oystercard.new
+    oystercard.topup(5)
+    expect{oystercard.topup 5}.to change{oystercard.balance}.by 5
+  end
 end
