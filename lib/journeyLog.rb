@@ -7,7 +7,7 @@ class JourneyLog
   end
 
   def start(station)
-    journeys << Journey.new(station)
+    journeys << journey_class.new(station)
   end
 
 end

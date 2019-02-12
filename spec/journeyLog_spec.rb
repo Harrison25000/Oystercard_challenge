@@ -10,6 +10,11 @@ describe JourneyLog do
     journeyLog = JourneyLog.new(Journey)
     journeyLog.start("Paddington")
     expect(journeyLog.journeys).to include(a_kind_of(Journey))
+  end
 
+  it "returns a new journey if there is no current journey" do
+    journeyLog = JourneyLog.new(Journey)
+    expect(journeyLog.current_journey).to have_attributes(:entrystation => nil, :exitstation => nil)
+    # a kind of Journey with nil entry and exit stations
   end
 end
