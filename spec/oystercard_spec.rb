@@ -3,6 +3,7 @@ require "oystercard"
 describe Oystercard do
 
   let(:station){double :station}
+  let(:exitstation){double :exitstation}
 
   it "Has a balance" do
     oystercard = Oystercard.new(0)
@@ -29,7 +30,7 @@ describe Oystercard do
   it "Is not on a journey" do
     oystercard = Oystercard.new(10)
     oystercard.tapin(station)
-    oystercard.tapout
+    oystercard.tapout(exitstation)
     expect(oystercard.in_journey?).to eq false
   end
 
@@ -42,7 +43,7 @@ describe Oystercard do
   it "Deducts minimum fare when tapping out" do
     oystercard = Oystercard.new(5)
     oystercard.tapin(station)
-    expect{oystercard.tapout}.to change{oystercard.balance}.by(-Oystercard::MINLIMIT)
+    expect{oystercard.tapout(exitstation)}.to change{oystercard.balance}.by(-Oystercard::MINLIMIT)
   end
 
   it "remembers station when tapin" do
@@ -54,8 +55,20 @@ describe Oystercard do
   it "forgets entry station on tapout" do
     oystercard = Oystercard.new(5)
     oystercard.tapin(station)
-    oystercard.tapout
+    oystercard.tapout(exitstation)
     expect(oystercard.entrystation).to eq nil
+  end
+
+  it "Starts with no journey" do
+    oystercard = Oystercard.new(10)
+    expect(oystercard.journeys).to be_empty
+  end
+
+  it "Has a list of journeys" do
+    oystercard = Oystercard.new (10)
+    oystercard.tapin(station)
+    oystercard.tapout(exitstation)
+    expect(oystercard.journeys).to include({"entry" => station, "exit" => exitstation})
   end
 
 
