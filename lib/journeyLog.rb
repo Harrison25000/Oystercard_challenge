@@ -10,4 +10,7 @@ class JourneyLog
     journeys << journey_class.new(station)
   end
 
+  def current_journey
+    @journey_class.new()
+  end
 end
