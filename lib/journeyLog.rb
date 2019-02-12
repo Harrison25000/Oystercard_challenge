@@ -14,4 +14,6 @@ class JourneyLog
     return journeys.last if journeys.last != nil && journeys.last.exitstation == nil
     @journey_class.new()
   end
+
+
 end
