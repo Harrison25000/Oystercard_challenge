@@ -8,11 +8,17 @@ class JourneyLog
 
   def start(station)
     journeys << journey_class.new(station)
+    puts "Im in the start method #{journeys}"
   end
 
   def current_journey
-    return journeys.last if journeys.last != nil && journeys.last.exitstation == nil
+    return journeys[journeys.length-1] if journeys[journeys.length-1] != nil && journeys[journeys.length-1].exitstation == nil
     @journey_class.new()
+  end
+
+  def finish(exitstation)
+    journeys[journeys.length-1].exit(exitstation)
+    puts "Im in the finish method #{journeys}"
   end
 
 
