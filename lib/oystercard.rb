@@ -1,11 +1,11 @@
 class Oystercard
-  attr_reader :balance, :state
+  attr_reader :balance, :entrystation
+
 
   MAXLIMIT = 90
   MINLIMIT = 1
 
-  def initialize(balance = 0, state)
-    @state = state
+  def initialize(balance = 0)
     @balance = balance
   end
 
@@ -14,25 +14,28 @@ class Oystercard
     @balance += money
   end
 
-  def deduct(amount)
-    @balance -= amount
-  end
-
-  def tapin
+  def tapin(station)
       fail "Can't travel - need £1"  if @balance <= MINLIMIT
-      @state = true
+      @entrystation = station
   end
 
-  def journey
-    if  @state == true
-      "In use"
+  def in_journey?
+    if  @entrystation != nil
+       true
     else
-      "Not in use"
+       false
     end
   end
 
   def tapout
-    @state = false
+    deduct
+    @entrystation = nil
+  end
+
+  private
+
+  def deduct
+    @balance -= MINLIMIT
   end
 
 end

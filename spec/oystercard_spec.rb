@@ -2,50 +2,60 @@ require "oystercard"
 
 describe Oystercard do
 
+  let(:station){double :station}
+
   it "Has a balance" do
-    oystercard = Oystercard.new(0, false)
+    oystercard = Oystercard.new(0)
     expect(oystercard.balance).to eq 0
   end
 
   it "Adds money to balance" do
-    oystercard = Oystercard.new(0, false)
+    oystercard = Oystercard.new(0)
     oystercard.topup(5)
     expect{oystercard.topup 5}.to change{oystercard.balance}.by 5
   end
 
   it "Raises an error if more than £90"do
-    oystercard = Oystercard.new(90, false)
+    oystercard = Oystercard.new(90)
     expect{oystercard.topup(1)}.to raise_error "Limit Reached"
   end
 
-  it "Deducts money" do
-    oystercard = Oystercard.new(20)
-    expect{oystercard.deduct(5)}.to change{oystercard.balance}.by -5
-  end
-
-  it "Begins journey" do
-    oystercard = Oystercard.new(10,false)
-    oystercard.tapin
-    expect(oystercard.state).to eq true
-  end
-
   it "Is on journey" do
-    oystercard = Oystercard.new(10, false)
-    oystercard.tapin
-    expect(oystercard.journey).to eq "In use"
+    oystercard = Oystercard.new(10)
+    oystercard.tapin(station)
+    expect(oystercard.in_journey?).to eq true
   end
 
   it "Is not on a journey" do
-    oystercard = Oystercard.new(10, false)
-    oystercard.tapin
+    oystercard = Oystercard.new(10)
+    oystercard.tapin(station)
     oystercard.tapout
-    expect(oystercard.state).to eq false
+    expect(oystercard.in_journey?).to eq false
   end
 
   it "Needs minimum £1 to travel" do
-    oystercard = Oystercard.new(0.5, false)
-    expect{oystercard.tapin}.to raise_error "Can't travel - need £1"
+    oystercard = Oystercard.new(0.5)
+    expect{oystercard.tapin(station)}.to raise_error "Can't travel - need £1"
 
+  end
+
+  it "Deducts minimum fare when tapping out" do
+    oystercard = Oystercard.new(5)
+    oystercard.tapin(station)
+    expect{oystercard.tapout}.to change{oystercard.balance}.by(-Oystercard::MINLIMIT)
+  end
+
+  it "remembers station when tapin" do
+    oystercard = Oystercard.new(5)
+    oystercard.tapin(station)
+    expect(oystercard.entrystation).to eq station
+  end
+
+  it "forgets entry station on tapout" do
+    oystercard = Oystercard.new(5)
+    oystercard.tapin(station)
+    oystercard.tapout
+    expect(oystercard.entrystation).to eq nil
   end
 
 
