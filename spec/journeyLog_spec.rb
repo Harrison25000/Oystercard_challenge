@@ -24,5 +24,10 @@ describe JourneyLog do
   expect(journeyLog.current_journey).to have_attributes(:entrystation => "Paddington", :exitstation => nil)
   end
 
-
+  it "adds exit station to current journey when it finishes" do
+    journeyLog = JourneyLog.new(Journey)
+    journeyLog.start("Paddington")
+    journeyLog.finish("Kings X")
+    expect(journeyLog.current_journey).to have_attributes(:entrystation => "Paddington", :exitstation => "Kings X")
+  end
 end
