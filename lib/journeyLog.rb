@@ -1,7 +1,7 @@
 class JourneyLog
   attr_reader :journey_class, :journeys
 
-  def initialize(journey_class)
+  def initialize(journey_class=Journey)
     @journeys = []
     @journey_class = journey_class
   end
@@ -21,5 +21,16 @@ class JourneyLog
     puts "Im in the finish method #{journeys}"
   end
 
+  def journ
+    @journeys.dup
+  end
+
+  def in_journey?
+    if  @journeys.last.exitstation == nil
+       true
+    else
+       false
+    end
+  end
 
 end

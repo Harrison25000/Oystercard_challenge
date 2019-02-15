@@ -8,7 +8,7 @@ class Oystercard
 
   def initialize(balance = 0)
     @balance = balance
-    @journeys = []
+    @journeylog = JourneyLog.new
   end
 
   def topup(money)
@@ -18,27 +18,20 @@ class Oystercard
 
   def tapin(station)
       fail "Can't travel - need £1"  if @balance <= MINLIMIT
-      @entrystation = station
-  end
-
-  def in_journey?
-    if  @entrystation != nil
-       true
-    else
-       false
-    end
+      @journeylog.start(station)
   end
 
   def tapout(exitstation)
-    deduct
-    @journeys.push({"entry" => @entrystation, "exit" => exitstation})
-    @entrystation = nil
+    # @journeys.push({"entry" => @entrystation, "exit" => exitstation})
+    # @entrystation = nil
+    @journeylog.finish(exitstation)
+    deduct(@journeylog.journeys.last.fare)
   end
 
   private
 
-  def deduct
-    @balance -= MINLIMIT
+  def deduct(amount)
+    @balance -= amount
   end
 
 end
