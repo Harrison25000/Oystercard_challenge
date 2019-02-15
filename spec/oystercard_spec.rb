@@ -2,8 +2,8 @@ require "oystercard"
 
 describe Oystercard do
 
-  let(:station){double :station}
-  let(:exitstation){double :exitstation}
+  let(:station){double :station, zone: 2}
+  let(:exitstation){double :exitstation, zone: 2}
 
   it "Has a balance" do
     oystercard = Oystercard.new(0)

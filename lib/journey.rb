@@ -1,3 +1,4 @@
+require_relative 'station'
 class Journey
 
   attr_reader :entrystation, :exitstation
@@ -14,8 +15,9 @@ class Journey
   end
 
   def fare
-  return PUNISHMENT if @entrystation == nil || @exitstation == nil
-       MINFARE
+    return PUNISHMENT if @entrystation == nil || @exitstation == nil
+    amount = @entrystation.zone - @exitstation.zone
+    amount.abs + MINFARE
   end
 
 end

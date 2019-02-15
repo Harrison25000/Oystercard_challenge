@@ -29,8 +29,9 @@ describe Journey do
  end
 
  it "Has a fare of 1 if entry/exit stations recorded" do
-   journey = Journey.new("Paddington")
-   journey.exit("Edgware Road")
+   station = double :station, zone: 2
+   journey = Journey.new(station)
+   journey.exit(station)
    expect(journey.fare).to eq 1
  end
 
@@ -41,7 +42,7 @@ describe Journey do
 
   before :each do
     @journey = Journey.new(station_double)
-    @journey.end(station_double2)
+    @journey.exit(station_double2)
   end
 
   it '2 when going from zone 1 to 2' do

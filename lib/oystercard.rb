@@ -1,3 +1,4 @@
+require_relative 'journeylog'
 class Oystercard
   attr_reader :balance, :entrystation, :journeys
 
